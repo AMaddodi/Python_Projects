@@ -1,0 +1,49 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from statsmodels.tsa.seasonal import seasonal_decompose
+from pylab import rcParams
+
+df = pd.read_csv(r"C:\Users\Archana\Documents\DataAnalysis\python\Air_passenges_dataset\AirPassengers.csv")
+
+print(df.dtypes)
+
+df = pd.read_csv(r"C:\Users\Archana\Documents\DataAnalysis\python\Air_passenges_dataset\AirPassengers.csv",
+                parse_dates = ['Month'])
+
+print(df.dtypes)
+
+df = pd.read_csv(r"C:\Users\Archana\Documents\DataAnalysis\python\Air_passenges_dataset\AirPassengers.csv",
+                parse_dates = ['Month'],
+                index_col = 'Month')
+
+df.plot()
+plt.show()
+
+rcParams['figure.figsize'] = 12,8
+df.plot()
+plt.show()
+
+df_mul_decomp = seasonal_decompose(df, model = 'multiplicative')
+df_mul_decomp.plot()
+plt.show()
+
+# log transformation
+df_log = df.copy()
+df_log['#Passengers'] = np.log(df)
+df_log.head()
+
+df_log.plot()
+plt.show()
+
+# compare with the original series
+
+plt.subplot(2,1,1)
+plt.title('Original time series')
+plt.plot(df)
+
+plt.subplot(2,1,2)
+plt.title('Log Transformed time series')
+plt.plot(df_log)
+plt.tight_layout()
